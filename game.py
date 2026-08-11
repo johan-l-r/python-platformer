@@ -26,6 +26,7 @@ class Game:
       self.window.fill((8, 8, 8))
 
       # update 
+      self.player.update()
 
       # draw 
       self.player.draw(self.window)

@@ -1,5 +1,7 @@
 import pygame as pg
 
+from player import Player
+
 pg.init()
 
 class Game: 
@@ -7,6 +9,8 @@ class Game:
     self.running: bool = False
 
     self.window: pg.Surface = pg.display.set_mode((800, 800))
+
+    self.player: Player = Player()
 
   def update(self): pass
   def draw(self): pass
@@ -24,6 +28,7 @@ class Game:
       # update 
 
       # draw 
+      self.player.draw(self.window)
 
       pg.display.flip()
 

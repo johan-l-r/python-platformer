@@ -4,7 +4,7 @@ pg.init()
 
 class Player: 
   def __init__(self) -> None:
-    self.SIZE: int = 64
+    self.SIZE: int = 32
     self.SPEED: int = 1
 
     self.GRAVITY: float = 0.2

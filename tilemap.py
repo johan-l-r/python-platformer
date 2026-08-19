@@ -13,31 +13,40 @@ class TileMap:
     self.start_x = 0
     self.start_y = 0
 
-    self.tiles: list[Tile] = []
-    self.level: list[str] = []
+    self.tiles: list[Tile] = self.gen_tilemap()
+
+  def read_level(self): 
+    lines: list[str] = []
 
     with open(self.path) as filename: 
       content = csv.reader(filename, delimiter = " ")
 
       for row in content: 
-        self.level.append(row)
+        lines.append(row)
+
+    return lines
 
   def gen_tilemap(self) -> list[Tile]: 
+    tiles = []
+    map: list[str] = self.read_level()
+
     y: int = 0
 
-    for row in self.level: 
+    for row in map: 
       x: int = 0
 
       for char in row: 
         if char == "1": 
           # 1 = ground 
-          self.tiles.append(Tile(x * 32, y * 32))
+          tiles.append(Tile(x * 32, y * 32))
 
         x += 1
       y += 1
 
-    return self.tiles
+    return tiles
 
   def draw(self, master: pg.Surface): 
     for tile in self.tiles: 
       pg.draw.rect(master, tile.get_color(), tile.get_rect())
+
+  def get_tiles(self) -> list[Tile]: return self.tiles

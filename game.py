@@ -2,7 +2,6 @@ import pygame as pg
 
 from player import Player
 from tilemap import TileMap
-from tile import Tile
 
 pg.init()
 
@@ -15,10 +14,31 @@ class Game:
     self.player: Player = Player()
     self.tilemap: TileMap = TileMap("./levels/lvl.csv")
 
-    self.map: list[Tile] = self.tilemap.gen_tilemap()
+  def check_collisions(self): 
+    for tile in self.tilemap.get_tiles(): 
+      # Y collisions
+      if tile.get_rect().collidepoint(self.player.get_rect().bottomleft): 
+        self.player.velocity.y = 0
+        self.player.get_position().y = tile.get_rect().top
+        self.player.get_rect().bottom = self.player.get_position().y
 
-  def update(self): pass
-  def draw(self): pass
+      # left collisions
+      if tile.get_rect().collidepoint(self.player.get_rect().topleft): 
+        self.player.get_position().x = tile.get_rect().right
+        self.player.get_rect().x = self.player.get_position().x
+
+      # right collisions
+      if tile.get_rect().collidepoint(self.player.get_rect().topright): 
+        self.player.get_position().x = tile.get_rect().left - 32
+        self.player.get_rect().x = self.player.get_position().x
+      
+  def update(self): 
+    self.player.update()
+    self.check_collisions()
+
+  def draw(self): 
+    self.player.draw(self.window)
+    self.tilemap.draw(self.window)
 
   def run(self) -> None: 
     self.running = True
@@ -31,11 +51,10 @@ class Game:
       self.window.fill((8, 8, 8))
 
       # update 
-      self.player.update()
+      self.update()
 
       # draw 
-      self.player.draw(self.window)
-      self.tilemap.draw(self.window)
+      self.draw()
 
       pg.display.flip()
 

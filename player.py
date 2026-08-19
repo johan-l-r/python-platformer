@@ -50,19 +50,14 @@ class Player:
       self.velocity.y = -self.JUMP_FORCE
       self.is_on_ground = False
 
-  def collide(self): 
-    if self.position.y >= 500: # provisional logic 
-      self.is_on_ground = True
-
-      self.position.y = 500
-      self.rect.bottomleft = self.position
-
   def update(self): 
     keys = pg.key.get_pressed()
 
     self.move(keys)
     self.jump(keys)
-    self.collide()
 
   def draw(self, master: pg.Surface) -> None: 
     pg.draw.rect(master, (189, 189, 189), self.rect)
+
+  def get_rect(self) -> pg.Rect: return self.rect
+  def get_position(self) -> pg.math.Vector2: return self.position
